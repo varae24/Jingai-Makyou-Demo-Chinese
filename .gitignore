@@ -1,0 +1,3 @@
+# 补丁本体只通过 GitHub Releases 分发，不进入 git 历史
+*.xp3
+*.xp3.bak
