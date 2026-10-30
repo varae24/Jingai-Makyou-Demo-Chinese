@@ -15,8 +15,6 @@
 > 「体験版『塵骸魔京』は、ここで終わります。」
 > （体验版《塵骸魔京》到此结束。）
 
-**最终版（v400）不在本补丁的汉化范围内。**
-
 ---
 
 ## 汉化声明
@@ -104,33 +102,13 @@ sha256sum data.xp3
 
 ## 顺带修复的技术问题
 
-这是本补丁除了翻译之外最值得说明的部分。
-
-### 1. 原版在中文 Windows 上根本无法启动
-
-原版归档中的 `system/HistoryLayer.tjs` 含有 **6 个不是合法 GBK 的字节**
-（来自 Shift_JIS 的符号区）。中文 Windows 下引擎按 GBK 解码时，这些字节会
-**把紧随其后的引号一起吞掉**，导致字符串未闭合：
-
-```
-文法エラーです at line 95
-文字列定数/正規表現/オクテット即値が終わらないままスクリプトの終端に達しました at line 1005
-文法エラーです at historylayer.tjs line 95
-trace : initialize.tjs(91)[(function) KAGLoadScript]
-```
-
-`HistoryLayer.tjs` 整份加载失败 → `initialize.tjs` 中断 → **游戏进程活着，
-但永远不出现窗口**（CPU 空闲、只加载 5 个模块，看起来像"卡死"）。
-
-本补丁已将该文件改为纯合法 GBK 字节，可直接启动。
-
-### 2. 换行禁则表整张失效
+### 1. 换行禁则表整张失效
 
 `HistoryLayer.tjs` 与 `MessageLayer.tjs` 各有一份行首／行末禁则表，
 原本是 Shift_JIS 字节，在 GBK 环境下整张变成乱码，对中文排版**完全无效**
 （行首可能出现标点、开括号被甩到行末）。已按简体中文规则重写。
 
-### 3. 日文文件名引用失效
+### 2. 日文文件名引用失效
 
 剧本中有 `rule="円形(中から外へ)"` 这类引用日文文件名的地方。日文假名在 GBK 中
 不存在，无法用编码技巧保留，因此把被引用的 3 个转场图片在归档内改为 ASCII 名
@@ -164,7 +142,6 @@ trace : initialize.tjs(91)[(function) KAGLoadScript]
 | 开发商 | Atomic No.47 |
 | 发布 | 2003-08-17（Comic Market 体验版） |
 | 本补丁对应 | [VNDB v44271](https://vndb.org/v44271)（Unfinished, no ongoing development） |
-| 最终版 | [VNDB v400](https://vndb.org/v400)（未汉化） |
 | 官网 | [jingai.net](http://www.jingai.net/) |
 
 ### 制作人员对照
@@ -175,10 +152,3 @@ trace : initialize.tjs(91)[(function) KAGLoadScript]
 | maru | maru | 音乐 |
 | 47AgDragon | 47AgDragon | 原画 |
 | 久枝 アリア | 久枝 亚里亚 | CG 设计 |
-
----
-
-## 反馈
-
-翻译勘误、排版问题、启动异常请提交 [Issue](../../issues)，并附上：
-游戏目录结构、Windows 版本、`data.xp3` 的 SHA256、问题截图。
